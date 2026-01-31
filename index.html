@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Background Remover</title>
+</head>
+<body style="text-align:center;font-family:Arial">
+
+<h2>AI Background Remover</h2>
+
+<input type="file" id="img">
+<br><br>
+<button onclick="send()">Remove BG</button>
+
+<div id="out"></div>
+
+<script>
+async function send() {
+  let f = document.getElementById("img").files[0];
+  let fd = new FormData();
+  fd.append("file", f);
+
+  document.getElementById("out").innerHTML="Processing...";
+
+  let r = await fetch("YOUR_API_URL/remove-bg", {
+    method:"POST",
+    body:fd
+  });
+
+  let b = await r.blob();
+  let u = URL.createObjectURL(b);
+
+  document.getElementById("out").innerHTML =
+    `<img src="${u}" width="300"><br>
+     <a download href="${u}">Download</a>`;
+}
+</script>
+
+</body>
+</html>
